@@ -4,25 +4,26 @@ from fastapi import APIRouter, Depends, HTTPException, Response, status
 from starlette.status import HTTP_201_CREATED
 
 from app.schemas import UserCreate, UserResponse, UserUpdate
-from app.service import UserService
+from app.service import get_user_repository
+from app.service.base import BaseUserRepository
 
 router = APIRouter()
 
 @router.post("/", response_model=UserResponse, status_code=HTTP_201_CREATED)
 async def create_user(
     user_in: UserCreate,
-    user_service: UserService = Depends()
+    repo: BaseUserRepository = Depends(get_user_repository)
 )->Any:
-    user = await user_service.create(user_in)
+    user = await repo.create(user_in)
     return user
 
 @router.get("/me", response_model=UserResponse)
 async def get_user(
     user_id: int,
-    user_service: UserService = Depends(),
+    repo: BaseUserRepository = Depends(get_user_repository)
     
 )->Any:
-    user = await user_service.get_user_by_id(user_id)
+    user = await repo.get_user_by_id(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
@@ -31,20 +32,20 @@ async def get_user(
 async def update_user(
     user_id: int,
     user_in: UserUpdate,
-    user_service: UserService = Depends()
+    repo: BaseUserRepository = Depends(get_user_repository)
 )->Any:
-    user = await user_service.get_user_by_id(user_id)
+    user = await repo.get_user_by_id(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    user = await user_service.update(user, user_in)
+    user = await repo.update(user, user_in)
     return user
 @router.delete("/me")
 async def delete_user(
     user_id: int,
-    user_service: UserService = Depends()
+    repo: BaseUserRepository = Depends(get_user_repository)
 )->Any:
-    user = await user_service.get_user_by_id(user_id)
+    user = await repo.get_user_by_id(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    await user_service.delete(user)
+    await repo.delete(user)
     return {"detail": "Пользователь удален"}

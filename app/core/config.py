@@ -20,7 +20,7 @@ class DataBase_Settings(BaseModel):
 
 class Settings(BaseSettings):
     database: DataBase_Settings
-    
+    REPOSITORY_TYPE: str = "db"
 
     model_config = SettingsConfigDict(
         env_file=".env",

@@ -6,9 +6,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_db
 from app.models import User
-from app.schemas import UserCreate, UserUpdate
+from app.schemas.user import UserCreate, UserUpdate
+from app.service.base import BaseUserRepository
 
-class UserService:
+class UserServiceDB(BaseUserRepository):
     def __init__(self, db: AsyncSession = Depends(get_db)):
         self.db = db
     
