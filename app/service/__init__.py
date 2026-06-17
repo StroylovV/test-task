@@ -19,9 +19,10 @@ def get_user_repository(db: AsyncSession = Depends(get_db)) -> BaseUserRepositor
     else:
         raise ValueError("Unknown REPOSITORY_TYPE in config")
 
+
 __all__ = [
     "BaseUserRepository",
     "UserServiceDB",
     "UserServiceMemory",
-    "get_user_repository"
+    "get_user_repository",
 ]

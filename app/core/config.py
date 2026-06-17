@@ -18,6 +18,7 @@ class DataBase_Settings(BaseModel):
     def sync_database_url(self) -> str:
         return f"postgresql+psycopg://{self.postgres_user}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
 
+
 class Settings(BaseSettings):
     database: DataBase_Settings
     REPOSITORY_TYPE: str = "db"
@@ -26,8 +27,8 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
-        extra="ignore", 
-        env_nested_delimiter="__",  
+        extra="ignore",
+        env_nested_delimiter="__",
     )
 
 
