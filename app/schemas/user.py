@@ -18,4 +18,9 @@ class CreateUser(BaseModel):
 
 class UserUpdate(BaseModel):
     FIO: str = Field(..., min_length=3, max_length=100)
-    
+
+class UserResponse(User):
+    id: int
+    FIO: str
+    class Config:
+        from_attributies = True  
